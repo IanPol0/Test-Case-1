@@ -1,4 +1,5 @@
 "use client"
+import { use, useState } from "react"
 
 type User = {
   id: number;
@@ -27,12 +28,13 @@ interface UsersTableProps {
 }
 
 const UsersTable : React.FC<UsersTableProps> = ({ data, keys }) => {
+  const [order, setOrder]=useState("")
+  console.log(order)
   if(!data[0]){
     return(
       <h1>Sorry, No users were found with the name you searched :(</h1>
     )
   }
-
 
   return (
     <table className="table-auto border">
@@ -40,7 +42,13 @@ const UsersTable : React.FC<UsersTableProps> = ({ data, keys }) => {
             <tr>
               {keys.map((title, index)=>(
                 <th key={index} className="border border-blue-400 px-5 py-2">
-                  {title}
+                  {title === 'username' ? (
+                      <button onClick={()=>order=== 'asc' ? setOrder("desc") : setOrder("asc")}>
+                          {title} {order === 'asc' ? '▲' : '▼'}
+                      </button>
+                  ) : (
+                      title
+                  )}
                 </th>
               ))}
             </tr>

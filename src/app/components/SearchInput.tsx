@@ -5,7 +5,6 @@ import { useState } from "react"
 const SearchInput =()=>{
   const router = useRouter();
   const [inputValue,  setInputValue] = useState("");
-  console.log(inputValue);
   const handleSearchInputChange = (value: string) => {
     setInputValue(value);
     router.replace(`?search=${value}`);
