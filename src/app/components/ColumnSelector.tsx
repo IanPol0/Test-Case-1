@@ -4,34 +4,24 @@ import {
   closestCenter,
   PointerSensor,
   useSensor,
-  useSensors
+  useSensors,
 } from '@dnd-kit/core';
 import {
   SortableContext,
   verticalListSortingStrategy,
-  sortableKeyboardCoordinates,
+  useSortable,
   arrayMove,
-  useSortable
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-const columns = [
-  "id",
-  "name",
-  "username",
-  "email",
-  "address",
-  "phone",
-  "website",
-  "company"
-];
+const columns = ['username', 'email', 'address', 'phone', 'website', 'company'];
 
 type ColumnSelectorProps = {
   onSave: (selectedColumns: string[]) => void;
   onClose: () => void;
   selectedColumns: string[];
 };
-// @ts-ignore
+//@ts-ignore
 const SortableItem = ({ id }) => {
   const {
     attributes,
@@ -39,13 +29,13 @@ const SortableItem = ({ id }) => {
     setNodeRef,
     transform,
     transition,
-    isDragging
+    isDragging,
   } = useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isDragging ? 2 : 1
+    zIndex: isDragging ? 2 : 1,
   };
 
   return (
@@ -62,9 +52,9 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({ onSave, onClose, select
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5
-      }
-    })
+        distance: 5,
+      },
+    }),
   );
 
   const handleSave = () => {
@@ -79,13 +69,19 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({ onSave, onClose, select
 
     if (active.id === over.id) return;
 
-    if (available.includes(active.id) && selected.includes(over.id)) {
-      setAvailable((items) => items.filter((item) => item !== active.id));
-      setSelected((items) => [...items, active.id]);
-    } else if (selected.includes(active.id) && available.includes(over.id)) {
-      setSelected((items) => items.filter((item) => item !== active.id));
-      setAvailable((items) => [...items, active.id]);
+    let newAvailable = available;
+    let newSelected = selected;
+
+    if (available.includes(active.id)) {
+      newAvailable = available.filter((item) => item !== active.id);
+      newSelected = [...selected, active.id];
+    } else if (selected.includes(active.id)) {
+      newSelected = selected.filter((item) => item !== active.id);
+      newAvailable = [...available, active.id];
     }
+
+    setAvailable(newAvailable);
+    setSelected(newSelected);
   };
 
   return (
@@ -97,6 +93,7 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({ onSave, onClose, select
             <SortableContext items={available} strategy={verticalListSortingStrategy}>
               <div className="bg-gray-200 p-2 rounded w-1/2 min-h-[200px]">
                 <h3 className="font-bold mb-2">Inactive Columns</h3>
+                {available.length === 0 && <div className="bg-white p-2 mb-2 rounded shadow">No columns available</div>}
                 {available.map((column) => (
                   <SortableItem key={column} id={column} />
                 ))}
@@ -106,6 +103,7 @@ const ColumnSelector: React.FC<ColumnSelectorProps> = ({ onSave, onClose, select
             <SortableContext items={selected} strategy={verticalListSortingStrategy}>
               <div className="bg-gray-200 p-2 rounded w-1/2 min-h-[200px]">
                 <h3 className="font-bold mb-2">Active Columns</h3>
+                {selected.length === 0 && <div className="bg-white p-2 mb-2 rounded shadow">No columns selected</div>}
                 {selected.map((column) => (
                   <SortableItem key={column} id={column} />
                 ))}
