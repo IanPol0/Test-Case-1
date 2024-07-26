@@ -31,7 +31,7 @@ type ColumnSelectorProps = {
   onClose: () => void;
   selectedColumns: string[];
 };
-
+// @ts-ignore
 const SortableItem = ({ id }) => {
   const {
     attributes,
