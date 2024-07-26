@@ -46,7 +46,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ data, keys, searchParams, defau
 
   return (
     <main>
-      <section className="flex flex-col gap-y-20 py-10 items-center h-screen bg-gradient-to-br from-green-400 to-blue-500">
+      <section className="flex flex-col gap-y-20 py-10 items-center h-screen bg-gradient-to-br from-green-400 to-blue-500 overflow-scroll no-scrollbar">
         <div className="flex items-center gap-5">
           <SearchInput />
           <button

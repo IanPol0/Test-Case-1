@@ -1,16 +1,21 @@
 "use server"
+import User from "@/app/types/user"
 const getData = async ()=>{
+  var data = []
   try{
     const response = await fetch ("https://jsonplaceholder.typicode.com/users",{
       method:"GET"
     })
-    const data= await response.json()
-
-    return data
+    data= await response.json()
   }
   catch(error){
     console.error(error)
   }
+  return data.map((user: { address: { street: string; suite: string }; company: { name: string } }) => ({
+    ...user,
+    address: `${user.address.street}, ${user.address.suite}`,
+    company: user.company.name,
+  }));
 }
 
 export default getData;

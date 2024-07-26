@@ -2,29 +2,7 @@
 import { useState } from "react"
 import dynamicSort from "@/lib/SortUsers";
 import { FaArrowDownShortWide, FaArrowUpShortWide } from "react-icons/fa6";
-
-
-type User = {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: [Object]
-  }
-  phone: string;
-  website: string;
-  company: {
-    name:string;
-    catchPhrase:string;
-    bs:string
-  };
-  [key: string]: any;
-};
+import User from "../types/user";
 
 interface UsersTableProps {
   data: User[];
@@ -80,7 +58,7 @@ const UsersTable : React.FC<UsersTableProps> = ({ data, keys, activeColumns }) =
           <tr key={index} className="text-center">
             {keys.map((key, idx) =>
               activeColumns.includes(key) ? (
-                <td key={idx} className="border px-5 py-2">{formatValue(user[key])}</td>
+                <td key={idx} className="border px-5 py-2 ">{formatValue(user[key])}</td>
               ) : null
             )}
           </tr>
