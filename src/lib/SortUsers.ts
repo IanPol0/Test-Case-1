@@ -1,0 +1,12 @@
+function dynamicSort(property:string) {
+  var sortOrder = 1;
+  if(property[0] === "-") {
+      sortOrder = -1;
+      property = property.slice(1, property.length);
+  }
+  return function (a:any,b:any) {
+      var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      return result * sortOrder;
+  }
+}
+export default dynamicSort

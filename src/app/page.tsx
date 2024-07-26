@@ -1,31 +1,9 @@
 import getData from "@/lib/getData";
-import SearchInput from "./components/SearchInput";
-import UsersTable from "./components/UsersTable";
+import HomeClient from "./components/HomeClient";
 
-export default async function Home({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Home({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
   const data = await getData();
   const keys = Object.keys(data[0]);
-  var filteredData = data;
-
-  if (searchParams && typeof searchParams.search === 'string') {
-    const searchQuery = searchParams.search.toLowerCase(); // Make search case-insensitive
-    filteredData = data.filter((user: any) =>
-      user.name.toLowerCase().includes(searchQuery)
-    )
-  }
-
-  return (
-    <main>
-      <section className="flex flex-col gap-y-20 py-10 items-center h-screen bg-gradient-to-br from-green-400 to-blue-500">
-        <SearchInput />
-        <UsersTable data={filteredData} keys={keys}/>
-      </section>
-    </main>
-  );
+  const defaultColumns = ["id", "name", "username", "email", "phone"];
+  return <HomeClient data={data} keys={keys} defaultColumns={defaultColumns} />;
 }
