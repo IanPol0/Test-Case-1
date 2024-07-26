@@ -43,7 +43,7 @@ const UsersTable : React.FC<UsersTableProps> = ({ data, keys, activeColumns }) =
                     className="flex items-center justify-center w-full gap-4"
                   >
                     {title}
-                    {order === "asc" ? <FaArrowUpShortWide /> : <FaArrowDownShortWide />}
+                    {order === "asc" ? <FaArrowDownShortWide />: <FaArrowUpShortWide />}
                   </button>
                 ) : (
                   title
