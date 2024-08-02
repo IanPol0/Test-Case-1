@@ -1,5 +1,5 @@
 "use server"
-import User from "@/app/types/user"
+import User from "@/types/user"
 const getData = async ()=>{
   var data = []
   try{

@@ -6,13 +6,13 @@ import User from "../types/user";
 
 interface UsersTableProps {
   data: User[];
-  keys:string[]
-  activeColumns:string[]
+  keys: string[]
+  activeColumns: string[]
 }
 
-const UsersTable : React.FC<UsersTableProps> = ({ data, keys, activeColumns }) => {
-  const [order, setOrder]=useState("")
-  
+const UsersTable: React.FC<UsersTableProps> = ({ data, keys, activeColumns }) => {
+  const [order, setOrder] = useState("")
+
   const formatValue = (value: any) => {
     if (typeof value === 'object' && value !== null) {
       return JSON.stringify(value);
@@ -43,7 +43,7 @@ const UsersTable : React.FC<UsersTableProps> = ({ data, keys, activeColumns }) =
                     className="flex items-center justify-center w-full gap-4"
                   >
                     {title}
-                    {order === "asc" ? <FaArrowDownShortWide />: <FaArrowUpShortWide />}
+                    {order === "asc" ? <FaArrowDownShortWide /> : <FaArrowUpShortWide />}
                   </button>
                 ) : (
                   title

@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import {
   DndContext,
   closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -13,10 +10,10 @@ import {
   arrayMove,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import useColumns from '@/hooks/useColumns';
 
-const columns = ['username', 'email', 'address', 'phone', 'website', 'company'];
 
-type ColumnSelectorProps = {
+interface ColumnSelectorProps {
   onSave: (selectedColumns: string[]) => void;
   onClose: () => void;
   selectedColumns: string[];
@@ -45,44 +42,8 @@ const SortableItem = ({ id }) => {
   );
 };
 
-const ColumnSelector: React.FC<ColumnSelectorProps> = ({ onSave, onClose, selectedColumns }) => {
-  const [selected, setSelected] = useState<string[]>(selectedColumns);
-  const [available, setAvailable] = useState<string[]>(columns.filter(column => !selectedColumns.includes(column)));
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 5,
-      },
-    }),
-  );
-
-  const handleSave = () => {
-    onSave(selected);
-    onClose();
-  };
-
-  const handleDragEnd = (event: any) => {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    if (active.id === over.id) return;
-
-    let newAvailable = available;
-    let newSelected = selected;
-
-    if (available.includes(active.id)) {
-      newAvailable = available.filter((item) => item !== active.id);
-      newSelected = [...selected, active.id];
-    } else if (selected.includes(active.id)) {
-      newSelected = selected.filter((item) => item !== active.id);
-      newAvailable = [...available, active.id];
-    }
-
-    setAvailable(newAvailable);
-    setSelected(newSelected);
-  };
+const ColumnSelector = ({ onSave, onClose, selectedColumns }: ColumnSelectorProps) => {
+  const { sensors, handleSave, handleDragEnd, available, selected } = useColumns({ onSave, onClose, selectedColumns });
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 text-black">

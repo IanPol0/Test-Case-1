@@ -1,7 +1,7 @@
 import getData from "@/lib/getData";
-import HomeClient from "./components/HomeClient";
+import HomeClient from "../components/HomeClient";
 
-export default async function Home({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
+export default async function Home() {
   const data = await getData();
   const keys = Object.keys(data[0]);
   const defaultColumns = ["id", "name", "username", "email", "phone"];

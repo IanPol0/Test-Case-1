@@ -1,48 +1,51 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import SearchInput from "./SearchInput";
 import UsersTable from "./UsersTable";
 import ColumnSelector from "./ColumnSelector";
 import { FaGear } from "react-icons/fa6";
+import { useSearchParams } from "next/navigation";
 
 type HomeClientProps = {
   data: any[];
   keys: string[];
-  searchParams?: { [key: string]: string | string[] | undefined };
   defaultColumns: string[]
 };
 
-const HomeClient: React.FC<HomeClientProps> = ({ data, keys, searchParams, defaultColumns }) => {
-  const [filteredData, setFilteredData] = useState(data);
+const HomeClient: React.FC<HomeClientProps> = ({ data, keys, defaultColumns }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeColumns, setActiveColumns] = useState<string[]>(defaultColumns);
-  
+
   useEffect(() => {
     const storedColumns = localStorage.getItem("activeColumns");
-    console.log(storedColumns)
     if (storedColumns) {
       setActiveColumns(JSON.parse(storedColumns));
-    }else{
+    } else {
       setActiveColumns(defaultColumns)
     }
   }, [defaultColumns]);
-  
-  useEffect(() => {
-    if (searchParams && typeof searchParams.search === 'string') {
-      const searchQuery = searchParams.search.toLowerCase();
-      const filtered = data.filter((user: any) =>
-        user.name.toLowerCase().includes(searchQuery)
-      );
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(data);
-    }
-  }, [searchParams, data]);
+
+  // useEffect(() => {
+  //   if (searchParams && typeof searchParams.search === 'string') {
+  //     const searchQuery = searchParams.search.toLowerCase();
+  //     const filtered = data.filter((user: any) =>
+  //       user.name.toLowerCase().includes(searchQuery)
+  //     );
+  //     setFilteredData(filtered);
+  //   } else {
+  //     setFilteredData(data);
+  //   }
+  // }, [searchParams]);
 
   const handleSaveColumns = (selectedColumns: string[]) => {
     setActiveColumns(selectedColumns);
     localStorage.setItem("activeColumns", JSON.stringify(selectedColumns));
   };
+
+  const searchParams = useSearchParams()
+  const search = searchParams.get('search')
+
+  const filteredData = useMemo(() => !search ? data : data.filter((user: any) => user.name.toLowerCase().includes(search)), [search])
 
   return (
     <main>
