@@ -2,6 +2,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 
+
+
 const SearchInput =()=>{
   const router = useRouter();
   const [inputValue,  setInputValue] = useState("");

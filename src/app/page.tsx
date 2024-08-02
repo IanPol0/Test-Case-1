@@ -5,5 +5,5 @@ export default async function Home({ searchParams }: { searchParams?: { [key: st
   const data = await getData();
   const keys = Object.keys(data[0]);
   const defaultColumns = ["id", "name", "username", "email", "phone"];
-  return <HomeClient data={data} keys={keys} defaultColumns={defaultColumns} />;
+  return <HomeClient data={data} keys={keys} defaultColumns={defaultColumns} searchParams={searchParams}/>;
 }

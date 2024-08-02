@@ -13,12 +13,11 @@ type HomeClientProps = {
 };
 
 const HomeClient: React.FC<HomeClientProps> = ({ data, keys, searchParams, defaultColumns }) => {
-  const [filteredData, setFilteredData] = useState(data);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeColumns, setActiveColumns] = useState<string[]>(defaultColumns);
-  
+  const storedColumns = localStorage.getItem("activeColumns");
   useEffect(() => {
-    const storedColumns = localStorage.getItem("activeColumns");
+
     console.log(storedColumns)
     if (storedColumns) {
       setActiveColumns(JSON.parse(storedColumns));
@@ -26,18 +25,8 @@ const HomeClient: React.FC<HomeClientProps> = ({ data, keys, searchParams, defau
       setActiveColumns(defaultColumns)
     }
   }, [defaultColumns]);
-  
-  useEffect(() => {
-    if (searchParams && typeof searchParams.search === 'string') {
-      const searchQuery = searchParams.search.toLowerCase();
-      const filtered = data.filter((user: any) =>
-        user.name.toLowerCase().includes(searchQuery)
-      );
-      setFilteredData(filtered);
-    } else {
-      setFilteredData(data);
-    }
-  }, [searchParams, data]);
+
+  const filteredData = searchParams &&  searchParams.search && typeof(searchParams.search)==="string" ? data.filter((user: any) => user.name.toLowerCase().includes(searchParams.search)) : data;
 
   const handleSaveColumns = (selectedColumns: string[]) => {
     setActiveColumns(selectedColumns);

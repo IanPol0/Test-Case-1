@@ -14,7 +14,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-const columns = ['username', 'email', 'address', 'phone', 'website', 'company'];
+const columns = ["name",'username', 'email', 'address', 'phone', 'website', 'company'];
 
 type ColumnSelectorProps = {
   onSave: (selectedColumns: string[]) => void;
